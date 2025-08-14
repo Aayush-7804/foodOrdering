@@ -24,7 +24,7 @@ export default function Checkout() {
     error,
     sendRequest,
     clearData
-  } = useHttp("http://loaclhost:3000/orders", config, []);
+  } = useHttp("http://localhost:3000/orders", config);
 
   const cartTotal = cartCtx.items.reduce((total, item) => {
     return total + item.price * item.quantity;
@@ -42,6 +42,7 @@ export default function Checkout() {
   function checkoutAction(prevState,fd) {
     const customerData = Object.fromEntries(fd.entries());
 
+    console.log(customerData);
     sendRequest(
       JSON.stringify({
         order: {
@@ -68,6 +69,7 @@ export default function Checkout() {
   }
 
   if (data && !error) {
+    console.log(data);
     return (
       <Modal
         open={userProgressCtx.progress === "checkout"}
@@ -92,7 +94,7 @@ export default function Checkout() {
         userProgressCtx.progress === "checkout" ? handleCloseCheckout : null
       }
     >
-      <form onSubmit={formAction}>
+      <form action={formAction}>
         <h2>Checkout</h2>
         <p>Total Amout: {currencyFormatter.format(cartTotal)}</p>
 
